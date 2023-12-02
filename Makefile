@@ -18,7 +18,7 @@ docker-build: ## build docker image
 
 .PHONY: docker-run
 docker-run: cleanup docker-build ## run docker image
-	${DOCKER} run --name ${APPLICATION} -d ${DOCKER_IMG_NAME}:${COMMIT_SHA}
+	${DOCKER} run --privileged --name ${APPLICATION} -d ${DOCKER_IMG_NAME}:${COMMIT_SHA}
 
 .PHONY: docker-debug
 docker-debug: cleanup docker-build ## debug docker image
