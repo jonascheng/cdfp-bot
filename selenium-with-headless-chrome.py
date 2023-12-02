@@ -12,19 +12,6 @@ from string import Template
 
 from datetime import timedelta, date, datetime
 
-from icalendar import Calendar, Event, vCalAddress, vText
-from botocore.exceptions import ClientError
-
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service
-
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-
-from selenium.common.exceptions import TimeoutException
-
 from seleniumbase import SB
 
 
@@ -56,30 +43,60 @@ source_path = '/source/'
 def VisitSignUp(self):
     logger.info("%s | VisitSignUp" % self.get_title())
 
+    SaveResult(sb, 'enter-visit-signup')
+
+    # check if element exists
+    selector = 'div#applylist'
+    if self.is_element_present(selector):
+        logger.info("%s | VisitSignUp: #applylist present" % self.get_title())
+
+    selector = 'div[class="td t-sign"]'
+    if self.is_element_present(selector):
+        logger.info("%s | VisitSignUp: t-sign present" % self.get_title())
+
+    # click signup button
+    selector = 'div[class="td t-sign"] a'
+    if self.is_element_present(selector):
+        logger.info("%s | VisitSignUp: t-sign link present" % self.get_title())
+        self.click(selector)
+
     logger.info("%s | VisitSignUp successfully" % self.get_title())
 
 
-def SaveResult(self, name):
-    logger.info("%s | SaveResult" % self.get_title())
+def SaveResult(self, prefix_name):
+    logger.info("%s | SaveResult %s" % (self.get_title(), prefix_name))
 
-    self.save_screenshot(name, folder=screenshot_path)
-    self.save_page_source('%s%s' % (name, 'html'), folder=source_path)
+    png_name = '%s-%s.png' % (prefix_name, current_time)
+    self.save_screenshot(png_name, folder=screenshot_path)
+    src_name = '%s-%s.html' % (prefix_name, current_time)
+    self.save_page_source(src_name, folder=source_path)
 
-    return '%s%s' % (screenshot_path, name)
+    return '%s%s' % (screenshot_path, png_name)
 
+
+# if screenshot_path not exists, create it
+if not os.path.exists(screenshot_path):
+    os.makedirs(screenshot_path)
+
+# if source_path not exists, create it
+if not os.path.exists(source_path):
+    os.makedirs(source_path)
 
 with SB(uc=True, browser='Chrome', incognito=True) as sb:
     try:
         sb.open("https://www.living-safety.com/safe/index.php#applylist")
 
+        # maximize window
+        sb.maximize_window()
+
         # visit signup page
         VisitSignUp(sb)
 
         # save result
-        SaveResult(sb, 'finish.png')
+        SaveResult(sb, 'finish')
 
     except Exception as e:
         logger.error('Exception: %s' % str(e))
 
         # save last error screen
-        SaveResult(sb, 'error.png')
+        SaveResult(sb, 'error')
