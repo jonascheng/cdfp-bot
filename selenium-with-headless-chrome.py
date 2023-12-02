@@ -50,6 +50,7 @@ def VisitSignUp(self):
     if self.is_element_present(selector):
         logger.info("%s | VisitSignUp: t-sign link present" % self.get_title())
         self.click(selector)
+        logger.info("%s | VisitSignUp: t-sign link clicked" % self.get_title())
 
     logger.info("%s | VisitSignUp successfully" % self.get_title())
 
@@ -73,7 +74,7 @@ if not os.path.exists(screenshot_path):
 if not os.path.exists(source_path):
     os.makedirs(source_path)
 
-with SB(uc=True, browser='Chrome', incognito=True) as sb:
+with SB(browser='Chrome', incognito=True) as sb:
     try:
         sb.open("https://www.living-safety.com/safe/index.php#applylist")
 

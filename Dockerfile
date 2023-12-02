@@ -42,7 +42,9 @@ RUN curl -O https://dl.google.com/linux/direct/google-chrome-stable_current_x86_
 RUN yum install google-chrome-stable_current_x86_64.rpm -y
 
 # for cron #####
-RUN crontab -l | { cat; echo "0 13 * * * (cd /app || exit 1; /opt/app-root/bin/python /app/selenium-with-headless-chrome.py >> /tmp/app.log)"; } | crontab -
+RUN crontab -l | { cat; echo "*/1 * * * * (cd /app || exit 1; /usr/bin/echo test >> /tmp/echo.log)"; } | crontab -
+# RUN crontab -l | { cat; echo "0 13 * * * (cd /app || exit 1; /opt/app-root/bin/python /app/selenium-with-headless-chrome.py >> /tmp/app.log)"; } | crontab -
+RUN crontab -l | { cat; echo "*/1 * * * * (cd /app || exit 1; /opt/app-root/bin/python /app/selenium-with-headless-chrome.py >> /tmp/app.log)"; } | crontab -
 
 WORKDIR /app
 
@@ -50,5 +52,4 @@ WORKDIR /app
 COPY selenium-with-headless-chrome.py .
 COPY ./entrypoint.sh ./entrypoint.sh
 
-# CMD [ "python", "selenium-with-headless-chrome.py" ]
 CMD ["/app/entrypoint.sh"]
