@@ -1,16 +1,7 @@
 import os
-import re
-import time
-import json
-import base64
 import logging
-import pause
-import platform
-import requests
 
-from string import Template
-
-from datetime import timedelta, date, datetime
+from datetime import datetime
 
 from seleniumbase import SB
 

@@ -37,13 +37,6 @@ RUN yum install -y cronie && yum clean all
 RUN rm -rf /etc/localtime
 RUN ln -s /usr/share/zoneinfo/Singapore /etc/localtime
 
-# download chromedriver
-RUN mkdir /opt/chrome
-# source https://googlechromelabs.github.io/chrome-for-testing/
-RUN curl -o chromedriver_linux64.zip https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/118.0.5993.70/linux64/chromedriver-linux64.zip
-RUN unzip chromedriver_linux64.zip -d /opt/chrome
-RUN cp /opt/chrome/chromedriver-linux64/chromedriver /usr/local/bin/chromedriver
-
 # install headless chrome
 RUN curl -O https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
 RUN yum install google-chrome-stable_current_x86_64.rpm -y

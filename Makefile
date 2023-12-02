@@ -9,8 +9,8 @@ PWD?=$(shell pwd)
 
 .PHONY: cleanup
 cleanup: ## cleanup
-	${DOCKER} stop ${APPLICATION}
-	${DOCKER} rm -f ${APPLICATION}
+	${DOCKER} stop ${APPLICATION} || true
+	${DOCKER} rm -f ${APPLICATION} || true
 
 .PHONY: docker-build
 docker-build: ## build docker image
