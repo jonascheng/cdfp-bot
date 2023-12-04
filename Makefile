@@ -10,7 +10,6 @@ PWD?=$(shell pwd)
 .PHONY: cleanup
 cleanup: ## cleanup
 	${DOCKER} stop ${APPLICATION} || true
-	${DOCKER} rm -f ${APPLICATION} || true
 
 .PHONY: docker-build
 docker-build: ## build docker image
@@ -18,11 +17,11 @@ docker-build: ## build docker image
 
 .PHONY: docker-run
 docker-run: cleanup docker-build ## run docker image
-	${DOCKER} run -v /tmp/${APPLICATION}/screenshot:/screenshot -v /tmp/${APPLICATION}/source:/source --privileged --name ${APPLICATION} -d ${DOCKER_IMG_NAME}:${COMMIT_SHA}
+	${DOCKER} run --rm -v /tmp/${APPLICATION}/screenshot:/screenshot -v /tmp/${APPLICATION}/source:/source --privileged --name ${APPLICATION} -d ${DOCKER_IMG_NAME}:${COMMIT_SHA}
 
 .PHONY: docker-debug
 docker-debug: cleanup docker-build ## debug docker image
-	${DOCKER} run -v ${PWD}:/app -v /tmp/${APPLICATION}/screenshot:/screenshot -v /tmp/${APPLICATION}/source:/source --name ${APPLICATION} -it ${DOCKER_IMG_NAME}:${COMMIT_SHA} bash
+	${DOCKER} run --rm -v ${PWD}:/app -v /tmp/${APPLICATION}/screenshot:/screenshot -v /tmp/${APPLICATION}/source:/source --name ${APPLICATION} -it ${DOCKER_IMG_NAME}:${COMMIT_SHA} bash
 
 .PHONY: docker-push
 docker-push: docker-build ## push docker image
