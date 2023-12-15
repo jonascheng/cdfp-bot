@@ -56,7 +56,7 @@ def VisitSignUp(self):
 
 
 def SaveResult(self, prefix_name):
-    logger.info("%s | SaveResult %s" % (self.get_title(), prefix_name))
+    logger.info("SaveResult %s" % prefix_name)
 
     png_name = '%s-%s.png' % (prefix_name, current_time)
     self.save_screenshot(png_name, folder=screenshot_path)
@@ -80,6 +80,9 @@ with SB(browser='Chrome', incognito=True) as sb:
 
         # maximize window
         sb.maximize_window()
+
+        # save result
+        SaveResult(sb, 'open')
 
         # visit signup page
         VisitSignUp(sb)
