@@ -41,16 +41,26 @@ def VisitSignUp(self):
     if self.is_element_present(selector):
         logger.info("%s | VisitSignUp: #applylist present" % self.get_title())
 
+    # <div class="td t-sign">
+    #  <a href="apply.php?act=form&amp;id=86" class="sign-btn-ok" title="我要報名">我要報名</a>
+    # </div>
     selector = 'div[class="td t-sign"]'
     if self.is_element_present(selector):
         logger.info("%s | VisitSignUp: t-sign present" % self.get_title())
 
-    # click signup button
-    selector = 'div[class="td t-sign"] a'
+    # check if "sign-btn-ok" exists
+    selector = 'div[class="td t-sign"] a[class="sign-btn-ok"]'
     if self.is_element_present(selector):
-        logger.info("%s | VisitSignUp: t-sign link present" % self.get_title())
+        logger.info("%s | VisitSignUp: sign-btn-ok link present" % self.get_title())
         self.click(selector)
-        logger.info("%s | VisitSignUp: t-sign link clicked" % self.get_title())
+        logger.info("%s | VisitSignUp: sign-btn-ok link clicked" % self.get_title())
+    # fall back: click signup button
+    else:
+        selector = 'div[class="td t-sign"] a'
+        if self.is_element_present(selector):
+            logger.info("%s | VisitSignUp: t-sign link present" % self.get_title())
+            self.click(selector)
+            logger.info("%s | VisitSignUp: t-sign link clicked" % self.get_title())
 
     logger.info("%s | VisitSignUp successfully" % self.get_title())
 
